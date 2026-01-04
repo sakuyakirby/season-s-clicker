@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>12ヶ月季節クリッカー</title>
+    <style>
+        body {
+            font-family: 'Helvetica Neue', Arial, sans-serif;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #fafafa;
+            user-select: none; /* テキスト選択を防いで連打しやすくする */
+        }
+        #score-container {
+            font-size: 3.5rem;
+            font-weight: bold;
+            margin-bottom: 5px;
+            color: #333;
+        }
+        #month-info {
+            font-size: 1.2rem;
+            color: #888;
+            margin-bottom: 25px;
+        }
+        /* クリックターゲットのデザイン */
+        #click-target {
+            background: none;
+            border: none;
+            cursor: pointer;
+            outline: none;
+            padding: 10px;
+            transition: transform 0.1s;
+            -webkit-tap-highlight-color: transparent; /* スマホのタップ青枠を消す */
+        }
+        #click-target:active {
+            transform: scale(0.92); /* 押した時に少し凹む */
+        }
+        #click-target img {
+            width: 280px; /* スマホで見やすいサイズ */
+            height: auto;
+            filter: drop-shadow(0 5px 10px rgba(0,0,0,0.1));
+        }
+    </style>
+</head>
+<body>
+
+    <div id="score-container">0</div>
+    <div id="month-info"></div>
+    
+    <button id="click-target">
+        <img id="season-img" src="" alt="loading...">
+    </button>
+
+    <script>
+        let score = 0;
+        const scoreDisplay = document.getElementById('score-container');
+        const seasonImg = document.getElementById('season-img');
+        const infoDisplay = document.getElementById('month-info');
+
+        // 1. 今の月を取得 (1〜12)
+        const now = new Date();
+        const month = now.getMonth() + 1;
+
+        // 2. 画像をセット (1.png, 2.png ... 12.png)
+        seasonImg.src = `${month}.png`;
+        infoDisplay.innerText = `${month}月のクリッカー`;
+
+        // 3. クリックした時の処理
+        document.getElementById('click-target').addEventListener('click', (e) => {
+            score++;
+            scoreDisplay.innerText = score;
+            
+            // オプション：連打した時に画像がちょっと揺れる演出
+            // もし必要ならここに追加できるよ！
+        });
+    </script>
+</body>
+</html>
