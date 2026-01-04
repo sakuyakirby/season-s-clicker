@@ -1,0 +1,55 @@
+body {
+    font-family: 'Segoe UI', sans-serif;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    margin: 0;
+    /* 季節感のあるグラデーション（後でJSで変えるのもアリ！） */
+    background: linear-gradient(180deg, #ffffff 0%, #e0f2fe 100%);
+    user-select: none;
+    overflow: hidden; /* 画面が揺れないように */
+}
+
+#score-container {
+    font-size: 5rem;
+    font-weight: 900;
+    margin: 0;
+    color: #334155;
+    text-shadow: 2px 2px 0px #fff; /* 文字をくっきり */
+}
+
+#month-info {
+    font-size: 1.4rem;
+    background: rgba(255, 255, 255, 0.6);
+    padding: 5px 20px;
+    border-radius: 20px;
+    color: #64748b;
+    margin-bottom: 30px;
+}
+
+/* クリックターゲット */
+#click-target {
+    background: none;
+    border: none;
+    cursor: pointer;
+    outline: none;
+    padding: 20px;
+    transition: transform 0.1s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    -webkit-tap-highlight-color: transparent;
+}
+
+/* 押した時のアニメーション（ポヨンとする感じ） */
+#click-target:active {
+    transform: scale(0.85) rotate(5deg);
+}
+
+#click-target img {
+    width: 70vw; /* 画面幅の70%にしてスマホに最適化 */
+    max-width: 350px;
+    height: auto;
+    /* ふわふわ浮いてるような影 */
+    filter: drop-shadow(0 20px 25px rgba(0,0,0,0.15));
+}
