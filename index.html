@@ -16,11 +16,12 @@
             height: 100vh;
             margin: 0;
             
-            /* 背景画像の設定 */
+            /* 背景画像の設定: dark.png */
             background-image: url('dark.png');
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
+            background-color: #1a1a1a; /* 画像がない時の予備色 */
             
             user-select: none;
             overflow: hidden;
@@ -30,21 +31,24 @@
             font-size: 5rem;
             font-weight: 900;
             margin: 0;
-            color: #334155;
-            background: rgba(255, 255, 255, 0.5); /* 数字を見やすく */
-            padding: 0 30px;
-            border-radius: 20px;
-            text-shadow: 2px 2px 0px #fff;
+            color: #f8fafc; /* 暗い背景用に明るい色 */
+            background: rgba(255, 255, 255, 0.1); 
+            backdrop-filter: blur(10px); /* 背景をボカしておしゃれに */
+            padding: 10px 40px;
+            border-radius: 25px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
         }
 
         #month-info {
-            font-size: 1.4rem;
-            background: rgba(255, 255, 255, 0.7);
-            padding: 5px 20px;
+            font-size: 1.2rem;
+            background: rgba(0, 0, 0, 0.4);
+            padding: 6px 24px;
             border-radius: 20px;
-            color: #64748b;
-            margin-top: 10px;
-            margin-bottom: 30px;
+            color: #cbd5e1;
+            margin-top: 15px;
+            margin-bottom: 35px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
         }
 
         /* クリックターゲット */
@@ -58,58 +62,57 @@
             -webkit-tap-highlight-color: transparent;
         }
 
-        /* 押した時の「ポヨン」としたアニメーション */
+        /* 押した時のリアクション */
         #click-target:active {
-            transform: scale(0.85) rotate(5deg);
+            transform: scale(0.85);
         }
 
         #click-target img {
             width: 75vw;
-            max-width: 350px;
+            max-width: 320px;
             height: auto;
-            filter: drop-shadow(0 20px 25px rgba(0,0,0,0.2));
+            /* 画像の下に光るような影を配置 */
+            filter: drop-shadow(0 0 20px rgba(255, 255, 255, 0.2));
         }
     </style>
 </head>
 <body>
 
     <div id="score-container">0</div>
-    <div id="month-info">ロード中...</div>
+    <div id="month-info">Loading...</div>
     
     <button id="click-target">
-        <img id="season-img" src="" alt="loading...">
+        <img id="season-img" src="" alt="準備中">
     </button>
 
     <script>
-        /* --- JavaScript: ゲームの動き --- */
+        /* --- JavaScript: ゲームの処理 --- */
         let score = 0;
         const scoreDisplay = document.getElementById('score-container');
         const seasonImg = document.getElementById('season-img');
         const infoDisplay = document.getElementById('month-info');
         const clickBtn = document.getElementById('click-target');
 
-        // 1. 今の月を取得 (1〜12)
+        // 1. 現在の月を取得
         const month = new Date().getMonth() + 1;
 
-        // 2. 画面の初期設定
-        // 画像は「1.png」〜「12.png」を読み込む
+        // 2. 月に応じた画像を設定 (1.png ~ 12.png)
         seasonImg.src = `${month}.png`;
-        infoDisplay.innerText = `今は ${month}月 です`;
+        infoDisplay.innerText = `${month}月の季節をゲット！`;
 
-        // 画像がないときのエラー表示
+        // 画像のエラー処理
         seasonImg.onerror = () => {
-            seasonImg.alt = `${month}.png が見つかりません`;
+            seasonImg.alt = `画像 (${month}.png) が見つかりません`;
         };
 
-        // 3. クリックした時の処理
+        // 3. クリックイベント
         clickBtn.addEventListener('click', () => {
-            // スコアアップ
             score++;
             scoreDisplay.innerText = score;
 
-            // スマホの軽いバイブレーション（対応機種のみ）
+            // スマホ用の振動演出
             if (navigator.vibrate) {
-                navigator.vibrate(10);
+                navigator.vibrate(5); 
             }
         });
     </script>
