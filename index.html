@@ -2,9 +2,10 @@
 <html lang="ja">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>12ヶ月季節クリッカー</title>
     <style>
+        /* --- CSS: デザインの設定 --- */
         body {
             font-family: 'Helvetica Neue', Arial, sans-serif;
             text-align: center;
@@ -14,70 +15,102 @@
             justify-content: center;
             height: 100vh;
             margin: 0;
-            background-color: #fafafa;
-            user-select: none; /* テキスト選択を防いで連打しやすくする */
+            
+            /* 背景画像の設定 */
+            background-image: url('background.png');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            
+            user-select: none;
+            overflow: hidden;
         }
+
         #score-container {
-            font-size: 3.5rem;
-            font-weight: bold;
-            margin-bottom: 5px;
-            color: #333;
+            font-size: 5rem;
+            font-weight: 900;
+            margin: 0;
+            color: #334155;
+            background: rgba(255, 255, 255, 0.5); /* 数字を見やすく */
+            padding: 0 30px;
+            border-radius: 20px;
+            text-shadow: 2px 2px 0px #fff;
         }
+
         #month-info {
-            font-size: 1.2rem;
-            color: #888;
-            margin-bottom: 25px;
+            font-size: 1.4rem;
+            background: rgba(255, 255, 255, 0.7);
+            padding: 5px 20px;
+            border-radius: 20px;
+            color: #64748b;
+            margin-top: 10px;
+            margin-bottom: 30px;
         }
-        /* クリックターゲットのデザイン */
+
+        /* クリックターゲット */
         #click-target {
             background: none;
             border: none;
             cursor: pointer;
             outline: none;
-            padding: 10px;
-            transition: transform 0.1s;
-            -webkit-tap-highlight-color: transparent; /* スマホのタップ青枠を消す */
+            padding: 20px;
+            transition: transform 0.1s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            -webkit-tap-highlight-color: transparent;
         }
+
+        /* 押した時の「ポヨン」としたアニメーション */
         #click-target:active {
-            transform: scale(0.92); /* 押した時に少し凹む */
+            transform: scale(0.85) rotate(5deg);
         }
+
         #click-target img {
-            width: 280px; /* スマホで見やすいサイズ */
+            width: 75vw;
+            max-width: 350px;
             height: auto;
-            filter: drop-shadow(0 5px 10px rgba(0,0,0,0.1));
+            filter: drop-shadow(0 20px 25px rgba(0,0,0,0.2));
         }
     </style>
 </head>
 <body>
 
     <div id="score-container">0</div>
-    <div id="month-info"></div>
+    <div id="month-info">ロード中...</div>
     
     <button id="click-target">
         <img id="season-img" src="" alt="loading...">
     </button>
 
     <script>
+        /* --- JavaScript: ゲームの動き --- */
         let score = 0;
         const scoreDisplay = document.getElementById('score-container');
         const seasonImg = document.getElementById('season-img');
         const infoDisplay = document.getElementById('month-info');
+        const clickBtn = document.getElementById('click-target');
 
         // 1. 今の月を取得 (1〜12)
-        const now = new Date();
-        const month = now.getMonth() + 1;
+        const month = new Date().getMonth() + 1;
 
-        // 2. 画像をセット (1.png, 2.png ... 12.png)
+        // 2. 画面の初期設定
+        // 画像は「1.png」〜「12.png」を読み込む
         seasonImg.src = `${month}.png`;
-        infoDisplay.innerText = `${month}月のクリッカー`;
+        infoDisplay.innerText = `今は ${month}月 です`;
+
+        // 画像がないときのエラー表示
+        seasonImg.onerror = () => {
+            seasonImg.alt = `${month}.png が見つかりません`;
+        };
 
         // 3. クリックした時の処理
-        document.getElementById('click-target').addEventListener('click', (e) => {
+        clickBtn.addEventListener('click', () => {
+            // スコアアップ
             score++;
             scoreDisplay.innerText = score;
-            
-            // オプション：連打した時に画像がちょっと揺れる演出
-            // もし必要ならここに追加できるよ！
+
+            // スマホの軽いバイブレーション（対応機種のみ）
+            if (navigator.vibrate) {
+                navigator.vibrate(10);
+            }
         });
     </script>
 </body>
